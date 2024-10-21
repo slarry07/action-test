@@ -1,22 +1,47 @@
-name:  Generate ASCII Artwork
+name: Generate ASCII Artwork
 
-on: push
+on:  
+  push
 
 jobs:
-    first_jobs:
-        runs-on: ubuntu-lastest
-        steps:
-        - name: Checkout
-          uses: actions/checkout@v4
+  build_job_1:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Install Cowsay Program
+      run: sudo apt-get install cowsay -y
 
-        - name: list Repo File
-          run: ls -itra
-        
-        - name: Excuting Shell Script
-          run: |
-           chmod +x acil-script.sh
-            ./acil-script.sh
-
-            
-
+    - name: Execute Cowsay CMD
+      run: cowsay -f dragon "Run for cover, I am a DRAGON....RAWR" >> dragon.txt
+    
+    - name: Upload Dragon text file
+      uses: actions/upload-artifact@v3
+      with:
+        name: dragon-text-file
+        path: dragon.txt
+ 
+  test_job_2:
+    needs: build_job_1
+    runs-on: ubuntu-latest
+    steps:
+    - name: Download Dragon text file
+      uses: actions/download-artifact@v3
+      with:
+        name: dragon-text-file
       
+    - name: Test File Exists
+      run: grep -i "dragon" dragon.txt
+
+  deploy_job_3:
+    needs: [test_job_2]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Download Dragon text file
+      uses: actions/download-artifact@v3
+      with:
+        name: dragon-text-file
+        
+    - name: Read File
+      run: cat dragon.txt
+       
+    - name: Deploy
+      run: echo Deploying ... .. .
