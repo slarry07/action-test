@@ -9,21 +9,13 @@ jobs:
         - name: Checkout
           uses: actions/checkout@v4
 
-        - name: instail cowsay Program
-          run: sudo apt-get  install cowsay -y
-
-        - name: Excute cowsay program
-          run: cowsay -f dragon "Run for cover, I am a DRAGON.....RAWR" >> dragon.txt
-
-        - name: est File Exists CMD
-          run: grep -l "dragon" dragon.txt
-
-    
-        - name: Read file
-          run: cat dragon.txt
-
-        - name: Lists Repo Files
-          run: ls -ltra 
+        - name: list Repo File
+          run: ls -itra
+        
+        - name: Excuting Shell Script
+          run: |
+           chmod +x acil-script.sh
+            ./acil-script.sh
 
             
 
